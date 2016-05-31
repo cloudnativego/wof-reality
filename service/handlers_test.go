@@ -3,7 +3,6 @@ package service
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -61,7 +60,47 @@ func TestUpdateReality(t *testing.T) {
 }
 
 func TestGetReality(t *testing.T) {
-	fmt.Println("placeholder")
+	var (
+		request  *http.Request
+		recorder *httptest.ResponseRecorder
+	)
+
+	fakeRepo := newInMemoryRepository()
+	server := newServerWithRepo(fakeRepo)
+	recorder = httptest.NewRecorder()
+
+	// Request for a non-existent game should 404
+	request, _ = http.NewRequest("GET", "/reality/game101", nil)
+	server.ServeHTTP(recorder, request)
+
+	if recorder.Code != http.StatusNotFound {
+		t.Errorf("Should have received a 404 for a non-existent game, got %d instead", recorder.Code)
+		return
+	}
+
+	// put a fake game in the repo.
+	fakeRepo.states["game250"] = createFakeReality("game250")
+	recorder = httptest.NewRecorder()
+	request2, _ := http.NewRequest("GET", "/reality/game250", nil)
+	server.ServeHTTP(recorder, request2)
+
+	if recorder.Code != http.StatusOK {
+		t.Errorf("Should have received HTTP 200 when querying reality, got %d instead", recorder.Code)
+	}
+
+	var realityResponse reality
+	payload := recorder.Body.Bytes()
+	err := json.Unmarshal(payload, &realityResponse)
+	if err != nil {
+		t.Errorf("Failed to de-serialize JSON response from server: %s", err.Error())
+		return
+	}
+
+	if realityResponse.GameID != "game250" ||
+		realityResponse.Players["bob"].Hitpoints != 99 ||
+		realityResponse.GameMap.Tiles[0][0].TileName != "grass-dirt-12" {
+		t.Errorf("Reality response from query is not what we expected. Got %+v", realityResponse)
+	}
 	return
 }
 

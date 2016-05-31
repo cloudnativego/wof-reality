@@ -35,6 +35,16 @@ func updateRealityHandler(formatter *render.Render, repo realityRepository) http
 
 func getRealityHandler(formatter *render.Render, repo realityRepository) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
+		vars := mux.Vars(req)
+		gameID := vars["gameId"]
+
+		gameReality, err := repo.getReality(gameID)
+		if err != nil {
+			formatter.Text(w, http.StatusNotFound, err.Error())
+			return
+		}
+
+		formatter.JSON(w, http.StatusOK, &gameReality)
 		return
 	}
 }
