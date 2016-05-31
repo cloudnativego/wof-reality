@@ -40,6 +40,7 @@ func getRealityHandler(formatter *render.Render, repo realityRepository) http.Ha
 
 		gameReality, err := repo.getReality(gameID)
 		if err != nil {
+			fmt.Println(err.Error())
 			formatter.Text(w, http.StatusNotFound, err.Error())
 			return
 		}

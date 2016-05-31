@@ -11,7 +11,7 @@ import (
 func main() {
 	appEnv, err := cfenv.Current()
 	if err != nil {
-		fmt.Printf("CF environment not detected.\n")
+		fmt.Printf("CF environment not detected. APP WILL RUN WITH FAKE REPOSITORY!\n")
 	}
 
 	port := os.Getenv("PORT")

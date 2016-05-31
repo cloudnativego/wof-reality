@@ -1,8 +1,14 @@
-hash: 5612b7595a1f4123618dfe09c801f2f511389e8246a96592cf796d4532e56dce
-updated: 2016-05-31T09:11:09.251458804-04:00
+hash: a6ac2aff1e4508aff044b2ee2dec9fa80128d14e72ec4295ba253a9f9502c0a5
+updated: 2016-05-31T13:06:12.731354364-04:00
 imports:
 - name: github.com/cloudfoundry-community/go-cfenv
   version: 96ad7376813bfd13c95af69ca5b4ef5725f6b335
+- name: github.com/cloudnativego/cf-tools
+  version: f59655db37a9fbf2c5cf9095211b9950ff2dab24
+- name: github.com/cloudnativego/cfmgo
+  version: 35605f2df87ae242b8c1fdef3c7ebc07916e339b
+  subpackages:
+  - params
 - name: github.com/codegangsta/negroni
   version: fb7b7c045dfb05dc81a5c3688c568550b5bd6e36
 - name: github.com/gorilla/context
@@ -13,4 +19,9 @@ imports:
   version: d2dd0262208475919e1a362f675cfc0e7c10e905
 - name: github.com/unrolled/render
   version: 198ad4d8b8a4612176b804ca10555b222a086b40
+- name: gopkg.in/mgo.v2
+  version: b6e2fa371e64216a45e61072a96d4e3859f169da
+  subpackages:
+  - bson
+  - internal/scram
 devImports: []
