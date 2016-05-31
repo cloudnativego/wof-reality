@@ -1,0 +1,16 @@
+hash: 5612b7595a1f4123618dfe09c801f2f511389e8246a96592cf796d4532e56dce
+updated: 2016-05-31T09:11:09.251458804-04:00
+imports:
+- name: github.com/cloudfoundry-community/go-cfenv
+  version: 96ad7376813bfd13c95af69ca5b4ef5725f6b335
+- name: github.com/codegangsta/negroni
+  version: fb7b7c045dfb05dc81a5c3688c568550b5bd6e36
+- name: github.com/gorilla/context
+  version: aed02d124ae4a0e94fea4541c8effd05bf0c8296
+- name: github.com/gorilla/mux
+  version: bd09be08ed4377796d312df0a45314e11b8f5dc1
+- name: github.com/mitchellh/mapstructure
+  version: d2dd0262208475919e1a362f675cfc0e7c10e905
+- name: github.com/unrolled/render
+  version: 198ad4d8b8a4612176b804ca10555b222a086b40
+devImports: []

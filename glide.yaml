@@ -1,0 +1,6 @@
+package: github.com/cloudnativego/wof-reality
+import:
+- package: github.com/cloudfoundry-community/go-cfenv
+- package: github.com/codegangsta/negroni
+- package: github.com/gorilla/mux
+- package: github.com/unrolled/render
