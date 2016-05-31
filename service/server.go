@@ -9,23 +9,27 @@ import (
 
 // NewServer configures and returns a Server.
 func NewServer(appEnv *cfenv.App) *negroni.Negroni {
+	repo := initRepository(appEnv)
+	n := newServerWithRepo(repo)
+	return n
+}
 
+func newServerWithRepo(repo realityRepository) *negroni.Negroni {
 	formatter := render.New(render.Options{
 		IndentJSON: true,
 	})
 
 	n := negroni.Classic()
 	mx := mux.NewRouter()
-
-	repo := initRepository(appEnv)
-
 	initRoutes(mx, formatter, repo)
-
 	n.UseHandler(mx)
 	return n
 }
 
 func initRepository(appEnv *cfenv.App) (repo realityRepository) {
+	if appEnv == nil {
+		repo = newInMemoryRepository()
+	}
 	return
 }
 

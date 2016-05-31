@@ -1,6 +1,6 @@
 package service
 
-type gamemap struct {
+type gameMap struct {
 	Tiles    [][]mapTile `json:"tiles"`
 	ID       string      `json:"id"`
 	Metadata mapMetadata `json:"metadata"`
@@ -32,11 +32,11 @@ type playerState struct {
 
 type reality struct {
 	GameID  string                 `json:"game_id"`
-	GameMap gamemap                `json:"game_map"`
+	GameMap gameMap                `json:"game_map"`
 	Players map[string]playerState `json:"players"`
 }
 
 type realityRepository interface {
-	updateReality(newReality reality) (err error)
+	updateReality(gameID string, newReality reality) (err error)
 	getReality(gameID string) (gameReality reality, err error)
 }
