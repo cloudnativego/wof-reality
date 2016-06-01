@@ -27,21 +27,20 @@ func TestIntegration(t *testing.T) {
 	}
 
 	// TODO: make integration test pass for upserting.
-	/*
-		newReality := createFakeReality("splendid")
-		err = putReality("splendid", newReality, t)
-		if err != nil {
-			t.Errorf("Failed to create reality: %s", err.Error())
-			return
-		}
+	newReality := createFakeReality("splendid")
+	err = putReality("splendid", newReality, t)
+	if err != nil {
+		t.Errorf("Failed to create reality: %s", err.Error())
+		return
+	}
 
-		expectedGame, err := getReality("splendid", http.StatusOK, t)
-		if err != nil {
-			t.Errorf("Should've gotten 200 when retrieving existing game, got %s", err)
-		}
-		if expectedGame.Players["bob"].Hitpoints != 99 {
-			t.Errorf("Retrieved game doesn't match what we expected, %+v", expectedGame)
-		} */
+	expectedGame, err := getReality("splendid", http.StatusOK, t)
+	if err != nil {
+		t.Errorf("Should've gotten 200 when retrieving existing game, got %s", err)
+	}
+	if expectedGame.Players["bob"].Hitpoints != 99 {
+		t.Errorf("Retrieved game doesn't match what we expected, %+v", expectedGame)
+	}
 }
 
 /* ========================== */

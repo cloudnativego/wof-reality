@@ -14,11 +14,12 @@ const (
 	RealityCollectionName = "realities"
 )
 
+//NOTE 1: in order to marshal properly, all fields must be annotated as `bson`
 type mongoReality struct {
 	RecordID bson.ObjectId          `bson:"_id,omitempty" json:"id"`
-	GameID   string                 `json:"game_id"`
-	GameMap  gameMap                `json:"game_map"`
-	Players  map[string]playerState `json:"players"`
+	GameID   string                 `bson:"game_id" json:"game_id"`
+	GameMap  gameMap                `bson:"game_map" json:"game_map"`
+	Players  map[string]playerState `bson:"players" json:"players"`
 }
 
 type mongoRealityRepository struct {
@@ -43,15 +44,30 @@ func (repo *mongoRealityRepository) updateReality(gameID string, newReality real
 	}
 	fmt.Printf("Updating reality record, gameID: %s, recordID: %+v\n", newReality.GameID, recordID)
 	newRecord := convertRealityToMongoReality(newReality, recordID)
-	info, err := repo.Collection.UpsertID(recordID, newRecord)
+	_, err = repo.Collection.UpsertID(recordID, newRecord)
 	if err != nil {
 		fmt.Printf("Failed to upsert record, %s\n", err.Error())
 		return
 	}
-	if info.Updated != 1 {
-		fmt.Printf("Failed to upsert: %+v\n", info)
-		err = fmt.Errorf("Did not update 1 row, updated %d", info.Updated)
-	}
+
+	//NOTE 2: Per the docs at: https://godoc.org/gopkg.in/mgo.v2#ChangeInfo
+
+	// type ChangeInfo struct {
+	// Updated reports the number of existing documents modified.
+	// Due to server limitations, this reports the same value as the Matched field when
+	// talking to MongoDB <= 2.4 and on Upsert and Apply (findAndModify) operations.
+	//    Updated    int
+	//     Removed    int         // Number of documents removed
+	//     Matched    int         // Number of documents matched but not necessarily changed
+	//     UpsertedId interface{} // Upserted _id field, when not explicitly provided
+	// }
+
+	// ...as such, the Updated field does not get set on an Insert:
+
+	// if info.Updated != 1 {
+	// 	fmt.Printf("Failed to upsert: %+v\n", info)
+	// 	err = fmt.Errorf("Did not update 1 row, updated %d", info.Updated)
+	// }
 	return
 }
 

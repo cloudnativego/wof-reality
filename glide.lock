@@ -1,5 +1,5 @@
 hash: a6ac2aff1e4508aff044b2ee2dec9fa80128d14e72ec4295ba253a9f9502c0a5
-updated: 2016-05-31T13:06:12.731354364-04:00
+updated: 2016-05-31T22:47:51.739865369-04:00
 imports:
 - name: github.com/cloudfoundry-community/go-cfenv
   version: 96ad7376813bfd13c95af69ca5b4ef5725f6b335
@@ -23,5 +23,6 @@ imports:
   version: b6e2fa371e64216a45e61072a96d4e3859f169da
   subpackages:
   - bson
+  - internal/sasl
   - internal/scram
 devImports: []
