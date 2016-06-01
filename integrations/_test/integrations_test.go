@@ -36,10 +36,33 @@ func TestIntegration(t *testing.T) {
 
 	expectedGame, err := getReality("splendid", http.StatusOK, t)
 	if err != nil {
-		t.Errorf("Should've gotten 200 when retrieving existing game, got %s", err)
+		t.Errorf("Should've gotten 200 when retrieving existing game, got %s", err.Error())
 	}
 	if expectedGame.Players["bob"].Hitpoints != 99 {
 		t.Errorf("Retrieved game doesn't match what we expected, %+v", expectedGame)
+	}
+
+	// change a game state and update it.
+	newReality.Players["bob"] = playerState{Hitpoints: 1, ID: "bob", CurrentTileID: "tile1"}
+	newReality.GameMap.Metadata.Author = "Changey McChangePants"
+	err = putReality("splendid", newReality, t)
+	if err != nil {
+		t.Errorf("Failed to update reality: %s", err.Error())
+		return
+	}
+
+	updatedGame, err := getReality("splendid", http.StatusOK, t)
+	if err != nil {
+		t.Errorf("Should've gotten 200 when retrieving updated game, got %s", err.Error())
+		return
+	}
+
+	if updatedGame.Players["bob"].Hitpoints != 1 {
+		t.Errorf("Bob's hitpoints should have been updated to 1, got %d", updatedGame.Players["bob"].Hitpoints)
+	}
+
+	if updatedGame.GameMap.Metadata.Author != "Changey McChangePants" {
+		t.Errorf("Map author should have changed but didn't, author was %s", updatedGame.GameMap.Metadata.Author)
 	}
 }
 
